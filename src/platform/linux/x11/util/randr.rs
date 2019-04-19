@@ -119,14 +119,10 @@ impl XConnection {
             (*output_info).nameLen as usize,
         );
         let name = String::from_utf8_lossy(name_slice).into();
-        let hidpi_factor = if let Some(dpi) = self.get_xft_dpi() {
-            dpi / 96.
-        } else {
-            calc_dpi_factor(
-                repr.get_dimensions(),
-                ((*output_info).mm_width as u64, (*output_info).mm_height as u64),
-            )
-        };
+        let hidpi_factor = calc_dpi_factor(
+            repr.get_dimensions(),
+            ((*output_info).mm_width as u64, (*output_info).mm_height as u64),
+        );
 
         (self.xrandr.XRRFreeOutputInfo)(output_info);
         Some((name, hidpi_factor))
